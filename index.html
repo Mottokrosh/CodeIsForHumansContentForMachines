@@ -40,9 +40,9 @@
 
 			<div class="slides">
 
-					<section>
-						<aside class="notes">Notes</aside>
-						<pre><code data-trim>
+				<section>
+					<aside class="notes">Notes</aside>
+					<pre><code data-trim>
 // introduction.js
 var http = require('http');
 var db = process.env.DB_URI || 'http://dbbutler:my_password@127.0.0.1:5984';
@@ -52,496 +52,220 @@ http.get(db + '/content/introduction', function (res) {
 }).on('error', function (e) {
 	console.log('Blimey: ' + e.message);
 });;
-						</code></pre>
-					</section>
-
-
-
-
-
-
-
-
-
-<!-- -->
-
-				<section>
-					<h1>Tools of the Javascript Trade</h1>
-					<p>It's NodeJS with NPM basically.</p>
-					<p>
-						<small>By <a href="https://www.neontribe.co.uk/the-people-of-neontribe/">Frank Reding</a> / <a href="http://twitter.com/mottokrosh">@mottokrosh</a></small>
-					</p>
-					<footer>
-						<h3 style="margin-top: 10%">Warning: Contains Nudity</h3>
-					</footer>
-					<aside class="notes">Quick intro about me.</aside>
-				</section>
-
-				<section data-background="img/thor.jpg">
-					<aside class="notes">Yes, I'm Asgardian.</aside>
-				</section>
-
-				<section>
-					<section>
-						<h1>Not To Do App</h1>
-						<aside class="notes">Traditionally, a to-do example app, so I'll be using this instead.</aside>
-					</section>
-					<section>
-						<aside class="notes">Here's how it might look like. Start reading first point. Anway, the daddy of JS tools is Node.</aside>
-						<p class="stretch"><img src="img/not_to_do_app.png"></p>
-					</section>
-				</section>
-
-				<section data-background="img/nodejs-logo.png">
-					<section>
-						<aside class="notes">
-							Open source project run by Joyent, originally by Ryan Dahl. Platform built on V8. For fast, scalable aps. Event-driven, non-blocking I/O model. Compare connections to Apache.
-						</aside>
-					</section>
-					<section>
-						<p><img src="img/ryan_dahl.gif"></p>
-						<h3>Ryan Dahl!</h3>
-					</section>
-					<section>
-						<aside class="notes">The Node magic begins with package.json. Here's a very tiny one. We'll build on it.</aside>
-						<h2>package.json</h2>
-						<pre><code data-trim>
-{
-	"name": "NotToDoApp",
-	"version": "0.0.1",
-	"description": "A twist on the classic To Do demo app.",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Mottokrosh/JavascriptTools"
-	},
-	"author": "Frank Reding (@mottokrosh)"
-}
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">And here's a node script. Server that returns 'Hello, world'. How about making the port configurable?</aside>
-						<h2>server.js</h2>
-						<pre><code data-trim>
-// Load the http module to create an http server.
-var http = require('http');
-
-// Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.end("Hello, world.\n");
-});
-
-// Listen on port 8000, IP defaults to 127.0.0.1/localhost
-server.listen(8000);
-
-// Put a friendly message on the terminal
-console.log("Server running at http://127.0.0.1:8000/");
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">Here's how we add a module, and save it to package.json</aside>
-						<pre><code>npm install -S yargs</code></pre>
-						<h2>package.json</h2>
-						<pre><code data-trim>
-{
-	"name": "NotToDoApp",
-	"version": "0.0.1",
-	"description": "A twist on the classic To Do demo app.",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Mottokrosh/JavascriptTools"
-	},
-	"author": "Frank Reding (@mottokrosh)",
-	"dependencies": {
-		"yargs": "^3.7.0"
-	}
-}
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">Let's update our script.</aside>
-						<h2>server.js</h2>
-						<pre><code data-trim>
-// Load the http module to create an http server.
-var http = require('http');
-var argv = require('yargs').argv;
-
-// Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-	response.writeHead(200, { 'Content-Type': 'text/plain' });
-	response.end('Hello World\n');
-});
-
-// Listen on specified port or default to 8000, IP defaults to 127.0.0.1/localhost
-var port = argv.port || 8000;
-server.listen(port);
-
-// Put a friendly message on the terminal
-console.log('Server running at http://127.0.0.1:' + port + '/');
-						</code></pre>
-					</section>
-					<section>
-						<pre><code>
-➜  NotToDoApp git:(master) ✗ node server.js --port 8002
-Server running at http://127.0.0.1:8002/
-						</code></pre>
-						<aside class="notes">And here's how we run it. But what about the code inside the require'd file? How do we write our own module?</aside>
-					</section>
-					<section>
-						<aside class="notes">Let's write a module called Nodomancy. It'll be magical. var exports = module.exports = {}; Never do exports =, that breaks ref. Use exports.thing = f(), or always module.exports.</aside>
-						<pre><code data-trim>
-// nodomancy.js
-module.exports = function () {
-	console.log('Conjuring up Nodomancy...');
-	// additional code sorcery
-};
-						</code></pre>
-						<pre><code data-trim>
-// my_app.js
-var nodomancy = require('./nodomancy.js'); // or implied paths
-
-// perform the magic
-nodomancy();
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">Add public API to our module. Mention require path resolution.</aside>
-						<pre><code data-trim>
-// advanced_nodomancy.js
-var Spell = function () {};
-
-Spell.prototype.cast = function (spell_name, save_type, dc) {
-	console.info('Casting %s. Roll a DC %s %s saving throw', spell_name, dc, save_type);
-};
-
-Spell.prototype.magic_missile = function () {
-	console.log('Casting Magic Missile at the darkness.');
-};
-
-module.exports = new Spell;
-						</code></pre>
-						<pre><code data-trim>
-// my_app.js
-var nodomancy = require('advanced_nodomancy');
-
-// perform the magic
-nodomancy.cast();
-
-// obscure geek culture reference
-if (darkness) {
-	nodomancy().magic_missile();
-	// http://knowyourmeme.com/memes/the-dead-alewives-dungeons-and-dragons
-}
-						</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<aside class="notes">Old way of coding front-end app.</aside>
-					<h1>The Old Way</h1>
-					<ol>
-						<li class="fragment">Download jQuery</li>
-						<li class="fragment">Extract and copy it into your project</li>
-						<li class="fragment">Reference it in your HTML</li>
-					</ol>
-				</section>
-
-				<section data-background="img/cool.jpg">
-					<h1>Cool</h1>
-				</section>
-
-				<section>
-					<p><img src="img/but.jpg"></p>
-				</section>
-
-				<section>
-					<aside class="notes">Few apps are that simple. Before you know. And now updating, maintaining is a nightmare.</aside>
-					<pre class="stretch"><code data-trim style="font-size: 90%; line-height: 1;">
-&lt;!doctype html>
-	&lt;head>
-		&lt;meta charset="utf-8">
-		&lt;title>Not To Do App&lt;/title>
-	&lt;/head>
-	&lt;body ng-app="NotToDoApp">
-		&lt;script src="phonegap.js">&lt;/script>
-		&lt;script src="components/jquery/dist/jquery.js">&lt;/script>
-		&lt;script src="components/jqueryui/dist/jqueryui.core.js">&lt;/script>
-		&lt;script src="components/jqueryui/dist/jqueryui.widget.js">&lt;/script>
-		&lt;script src="components/jqueryui/dist/jqueryui.datepicker.js">&lt;/script>
-		&lt;script src="components/angular/angular.js">&lt;/script>
-		&lt;script src="components/angular-animate/angular-animate.js">&lt;/script>
-		&lt;script src="components/angular-router/angular-router.js">&lt;/script>
-		&lt;script src="components/angular-resource/angular-resource.js">&lt;/script>
-		&lt;script src="components/angular-sanitize/angular-sanitize.js">&lt;/script>
-		&lt;script src="components/angular-aria/angular-aria.js">&lt;/script>
-		&lt;script src="components/cookie-monster/lib/monster.js">&lt;/script>
-		&lt;script src="components/underscore/underscore.js">&lt;/script>
-		&lt;script src="components/moment/moment.js">&lt;/script>
-		&lt;script src="content/scenarios.js">&lt;/script>
-		&lt;script src="content/text.js">&lt;/script>
-		&lt;script src="scripts/services.js">&lt;/script>
-		&lt;script src="scripts/app.js">&lt;/script>
-		&lt;script src="scripts/controllers/main.js">&lt;/script>
-		&lt;script src="scripts/controllers/entry.js">&lt;/script>
-		&lt;script src="scripts/controllers/my.js">&lt;/script>
-		&lt;script src="scripts/controllers/profile.js">&lt;/script>
-		&lt;script src="scripts/controllers/read.js">&lt;/script>
-		&lt;script src="scripts/controllers/login.js">&lt;/script>
-		&lt;script src="scripts/controllers/logout.js">&lt;/script>
-		&lt;script src="scripts/controllers/register.js">&lt;/script>
-		&lt;script src="scripts/controllers/lostpassword.js">&lt;/script>
-		&lt;script src="scripts/controllers/backdoor.js">&lt;/script>
-		&lt;script src="scripts/controllers/fixednav.js">&lt;/script>
-		&lt;script src="scripts/controllers/dialog.js">&lt;/script>
-		&lt;script src="scripts/controllers/demo.js">&lt;/script>
-	&lt;/body>
-&lt;/html>
 					</code></pre>
 				</section>
 
-				<section data-background="img/nightmare.jpg"></section>
-
 				<section>
-					<section>
-						<aside class="notes">Enter Yeoman. "a commoner who cultivates his own land."</aside>
-						<img src="img/yeoman.png" class="stretch">
-					</section>
-					<section>
-						<aside class="notes">Originally yo, grunt, bower. Now the site explicity mentions gulp, npm.</aside>
-						<img src="img/logo_yo.png" style="margin: 0 20px;">
-						<img src="img/logo_grunt.png" style="margin: 0 20px;">
-						<img src="img/logo_bower.png" style="margin: 0 20px;">
-					</section>
-					<section>
-						<aside class="notes">Grunt was first, but many competitors have emerged. Also desktop apps (mixture.io, CodeKit). Also, npm instead of bower.</aside>
-						<img src="img/grunt-gulp-brunch.png">
-					</section>
+					<p><img src="img/troy_mcclure.jpg" style="max-height: 700px"></p>
+					<aside class="notes">You may remember me from such talks as: - Intro to Angular (because it was popular at the time); - Into to JS build tools (because Paul wanted to know). I hope by the end of this more philosophical talk to have convinced you that indeed code is for humans and content for machines.</aside>
+				</section>
+
+				<section data-background="img/personae.jpg">
+					<aside class="notes">To help me illustrate my points I'll be using several personas (or personae) - that's agile speak for "fictional end users".</aside>
 				</section>
 
 				<section>
-					<section data-markdown>
-						<aside class="notes">Let's have a look at how to use gulp.</aside>
-						<script type="text/template">
-							## Gulp
-							Install gulp globally (somewhat annoyingly):
-
-							```
-							npm install --global gulp
-							```
-
-							Install gulp in your project devDependencies:
-
-							```
-							npm install --save-dev gulp // or npm install -D gulp
-							```
-
-							Create a gulpfile.js at the root of your project:
-
-							```
-							var gulp = require('gulp');
-
-							gulp.task('default', function() {
-								// place code for your default task here
-							});
-							```
-
-							Run gulp:
-
-							```
-							gulp
-							```
-						</script>
-					</section>
-					<section>
-						<aside class="notes">Let's make a simple gulpfile. Starting with CSS.</aside>
-						<h2>gulpfile.js</h2>
-						<pre><code data-trim>
-var gulp       = require('gulp');
-var sourcemaps = require('gulp-sourcemaps');
-var sass       = require('gulp-sass');
-var prefix     = require('gulp-autoprefixer');
-var csso       = require('gulp-csso');
-
-gulp.task('css', function () {
-	return gulp.src('src/css/**/*.scss') // any order
-		.pipe(sourcemaps.init())
-		.pipe(sass())
-		.pipe(prefix())
-		.pipe(csso())
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('public/css'));
-});
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">Gylp task execute concurrently. When file order is important, specify. Might want to do a similar thing with vendor scripts.</aside>
-						<h2>gulpfile.js (cont'd)</h2>
-						<pre><code data-trim>
-var jshint  = require('gulp-jshint');
-var stylish = require('jshint-stylish');
-var concat  = require('gulp-concat');
-var uglify  = require('gulp-uglify');
-
-gulp.task('scripts', function () {
-	return gulp.src(['src/js/start.js', 'src/js/**/*.js']) // partially determined order
-		.pipe(jshint())
-		.pipe(jshint.reporter(stylish))
-		.pipe(sourcemaps.init())
-		.pipe(concat('app.js'))
-		.pipe(uglify())
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('public/js'));
-});
-						</code></pre>
-					</section>
-					<section>
-						<aside class="notes">Here's something cool. Auto-optimising images. Doesn't stop there. SVGs, fonts, icon fonts, sprites, you name it, there's a npm/gulp module for it.</aside>
-						<h2>gulpfile.js (cont'd)</h2>
-						<pre><code data-trim>
-var imagemin = require('gulp-imagemin');
-
-gulp.task('images', function () {
-	return gulp.src('src/img/**/*.{png,jpg}')
-		.pipe(imagemin())
-		.pipe(gulp.dest('public/img'));
-});
-						</code></pre>
-					</section>
-					<section data-background="#a00">
-						<aside class="notes">Example</aside>
-						<h2>JPEG</h2>
-						<div style="display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex">
-							<figure style="-webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1">
-								<img src="img/chuck-norris.jpg"><br>301 KB
-							</figure>
-							<figure style="-webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1">
-								<img src="img/chuck-norris-optimised.jpg"><br>298 KB
-							</figure>
-						</div>
-					</section>
-					<section>
-						<aside class="notes">Great results for PNGs</aside>
-						<h2>PNG</h2>
-						<div style="display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex">
-							<figure style="-webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1">
-								<img src="img/futurama.png"><br>880 KB
-							</figure>
-							<figure style="-webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1">
-								<img src="img/futurama-optimised.png"><br>202 KB
-							</figure>
-						</div>
-					</section>
-					<section>
-						<aside class="notes">And finally, server and watch. We could augment this in all sorts of ways (versioning, vendor files, html templates, favicons, etc.)</aside>
-						<h2>gulpfile.js (cont'd)</h2>
-						<pre class="stretch"><code data-trim>
-var express = require('express');
-var karma   = require('karma').server;
-
-gulp.task('default', ['css', 'scripts', 'images'], function (done) {
-	// Create simple static server
-	var app = express();
-	app.use(express.static(__dirname + '/public'));
-	app.listen(8080);
-	console.log('Listening on :8080');
-
-	// Fire up Karma for our unit tests
-	karma.start({
-		configFile: __dirname + '/test/karma.conf.js'
-	}, done);
-
-	// Watch for file changes
-	gulp.watch('src/css/**/*.scss', ['css']);
-	gulp.watch('src/js/**/*.js', ['scripts']);
-	gulp.watch('src/img/**/*.{png,jpg}', ['images']);
-});
-						</code></pre>
-					</section>
-				</section>
-
-				<section data-background="img/different.gif">
-					<aside class="notes">The Node module pattern is so cool, what if we could use it for our front-end code? While we're at it, could we get rid of bower, and just use npm? Explain difference. package.main. npm front-end means main file requires its own dependencies.</aside>
-				</section>
-
-				<section data-background="img/brocade.jpg">
-					<section>
-						<p><img src="img/browserify.png"></p>
-						<p>And a lot more...</p>
-					</section>
-					<section>
-						<h2>package.json</h2>
-						<pre class="stretch"><code data-trim>
-{
-	"name": "NotToDoApp",
-	"version": "0.0.1",
-	"description": "A twist on the classic To Do demo app.",
-	"author": "Frank Reding &lt;frank@neontribe.co.uk>",
-	"main": "static/bundle.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/mottokrosh/JavascriptTools"
-	},
-	"devDependencies": {
-		"browserify": "^9.0.8",
-		"karma": "^0.12.31"
-	},
-	"scripts": {
-		"test": "karma start --auto-watch",
-		"build": "browserify browser.js -o static/bundle.js",
-		"watch": "watchify browser.js -o static/bundle.js --debug --verbose"
-	}
-}
-						</code></pre>
-						<aside class="notes">Node core modules (some shimmed), Transforms, livereload. For more granularity, use API, or gaze.</aside>
-					</section>
-				</section>
-
-				<section data-background="img/tips.jpg">
-					<h1>General Tips</h1>
-					<ul class="stretch">
-						<li>
-							Node - reading values from JSON files:<br>
-							<pre><code data-trim>
-var tips = require('./content/dump.json');
-console.log(tips.general);
-							</code></pre>
-						</li>
-						<li>
-							Node - command line shortcuts:<br>
-							<pre><code data-trim>
-npm start // === npm run start
-npm test // === npm run test
-							</code></pre>
-						</li>
-						<li>
-							Gulp - task dependencies:<br>
-							<pre><code data-trim>
-gulp.task('css', ['fonts'], function () {
-	// ensures the 'fonts' task is run and completed before this one starts
-});
-							</code></pre>
-						</li>
-					</ul>
+					<p><img src="img/contemporary_frank.gif" style="max-height: 700px"></p>
+					<aside class="notes">Contemporary Frank. It'll be his fault.</aside>
 				</section>
 
 				<section>
-					<h1>Conclusion</h1>
-					<p><img src="img/mr-burns-excellent.gif"></p>
-					<aside class="notes">Regardless which tools, they help streamline, simplify, and accelerate workflow. If not, re-evaluate. Easy to spend too much time on build tools (especially configuring or debugging grunt). Great community for each approach. If you write your own, OS publish it!</aside>
+					<p><img src="img/future_frank.jpg" style="max-height: 700px"></p>
+					<aside class="notes">Future Frank: terrible vision but excellent contact lenses, too lazy to put them in. Attention span shorter than the plot script of Mad Max Fury Road. I was trying to tell that joke to someone but I couldn't remember it, so I said something like "I have a joke about FF's attention span but... I can't remember it now." Which they then thought was the joke.</aside>
 				</section>
 
+				<section>
+					<p><img src="img/poor_coworker.jpg" style="max-height: 700px"></p>
+					<aside class="notes">Anyway, our second persona is Poor Co-worker. Not literally poor; poor in the sense that he has to deal with contemporary Frank's code.</aside>
+				</section>
+
+				<section>
+					<h1>Code</h1>
+					<aside class="notes">Let's talk about first statement. When I was young, low level coding was still a common thing. A particular processor architecture with its own machine code set of instructions that you could program with using assembly language.</aside>
+				</section>
+
+				<section>
+					<section>
+						<pre><code data-trim style="max-height: 700px;">
+.MODEL	large
+.186
+
+UP	EQU	1
+DOWN	EQU	0
+
+CONT_BASE		EQU	0FF00H
+EOI_REGISTER		EQU	CONT_BASE + 022H
+TIMER_CONTROL_REGISTER	EQU	CONT_BASE + 032H
+TIMER_CTL		EQU	CONT_BASE + 00032H
+TIMER0_CNT		EQU	CONT_BASE + 00050H
+TIMER0_MAXA		EQU	CONT_BASE + 00050H
+TIMER0_MAXB		EQU	CONT_BASE + 00054H
+TIMER0_CTL		EQU	CONT_BASE + 00056H
+TIMER1_CNT		EQU	CONT_BASE + 00058H
+TIMER1_MAXA		EQU	CONT_BASE + 0005AH
+TIMER1_MAXB		EQU	CONT_BASE + 0005CH
+TIMER1_CTL		EQU	CONT_BASE + 0005EH
+TIMER2_MAX		EQU	CONT_BASE + 00062H
+TIMER2_CTL		EQU	CONT_BASE + 00066H
+
+NON_SPECIFIC_EOI	EQU	08000H
+YARD_INCREMENT		EQU	010000000000B
+YARD_DECREMENT		EQU	01000000000000B
+
+DGROUP	group	_DATA, _BSS
+
+_DATA	segment	word	public	'DATA'
+@curseg ENDS
+
+_BSS	segment	word	public	'BSS'
+@curseg ENDS
+
+EXTRN	_dt_ymppr:WORD
+EXTRN	_dt_ymdydx:WORD
+EXTRN	_io_evnt:DWORD
+
+EXTRN	AAEVSIG:far
+
+assume	cs:_TEXT,ds:DGROUP
+
+_TEXT	segment	byte	public	'CODE'
+
+	public	_dt_ym0
+	public	_dt_ym1
+
+_dt_ym0	proc	far
+
+	push	ax
+	push	bx
+	push	dx
+	xor	ax,ax
+	mov	dx,TIMER1_CNT
+	in	al,dx
+	or	al,al
+	jnz	FIXCOUNT0
+	xor	ax,ax
+	out	dx,ax
+	mov	dx,TIMER0_CNT
+	out	dx,ax
+	jmp	SIGDEC
+FIXCOUNT0:
+	mov	bx,ax
+	mov	ax,_dt_ymppr
+	sub	ax,bx
+	mov	dx,TIMER0_CNT
+	out	dx,ax
+	xor	ax,ax
+	mov	dx,TIMER1_CNT
+	out	dx,ax
+	jmp	VAMOS0
+SIGDEC:
+	mov	_dt_ymdydx,DOWN
+	push	word ptr 0FFFFH
+	push	word ptr YARD_DECREMENT
+	push	word ptr _io_evnt
+	call	far ptr AAEVSIG
+	add	sp,6
+VAMOS0:
+	mov	dx,EOI_REGISTER
+	mov	ax,NON_SPECIFIC_EOI
+	out	dx,ax
+	pop	dx
+	pop	bx
+	pop	ax
+	ret
+
+_dt_ym0	endp
+
+_dt_ym1	proc	far
+
+	push	ax
+	push	bx
+	push	dx
+	xor	ax,ax
+	mov	dx,TIMER0_CNT
+	in	al,dx
+	or	al,al
+	jnz	FIXCOUNT1
+	xor	ax,ax
+	out	dx,ax
+	mov	dx,TIMER1_CNT
+	out	dx,ax
+	jmp	SIGINC
+FIXCOUNT1:
+	mov	bx,ax
+	mov	ax,_dt_ymppr
+	sub	ax,bx
+	mov	dx,TIMER1_CNT
+	out	dx,ax
+	xor	ax,ax
+	mov	dx,TIMER0_CNT
+	out	dx,ax
+	jmp	VAMOS1
+SIGINC:
+	mov	_dt_ymdydx,UP
+	push	word ptr 0FFFFH
+	push	word ptr YARD_INCREMENT
+	push	word ptr _io_evnt
+	call	far ptr AAEVSIG
+	add	sp,6
+VAMOS1:
+	mov	dx,EOI_REGISTER
+	mov	ax,NON_SPECIFIC_EOI
+	out	dx,ax
+	pop	dx
+	pop	bx
+	pop	ax
+	ret
+
+_dt_ym0	endp
+
+@curseg ENDS
+end
+						</code></pre>
+						<aside class="notes">You don't get much closer to the metal than that. You're pressing the processor's buttons. But we already made allowances for humans in the form of mnemonics, so that we don't have to remember the values these codes stand for. Our assembler will take care of assembling these instructions in the final machine code.</aside>
+					</section>
+
+					<section>
+						<pre style="box-shadow: none; text-align: center; font-size: 30px;">\m/</pre>
+						<p><img src="img/craig_federighi_metal.jpg"></p>
+						<aside class="notes">Craig Federighi, Apple's senior vice president of Software Engineering.</aside>
+					</section>
+				</section>
+
+				<section>
+					<h1>Code</h1>
+					<aside class="notes">Very powerful, but very impractical. Remember, this form is for one processor architecture only. If we want to target several, we have to write our assembly instructions several times. Plus, we keep having to write a lot of code for seemingly simply tasks, such as responding to a button click, or heaven forfend, mouse movement. So to overcome this, we're going to go a little higher. We've just arrived at interpreted/compiled programming languages.</aside>
+				</section>
+
+				<section>
+					<p><img src="img/approval.jpg" style="max-height: 700px"></p>
+					<aside class="notes">We've done this for ourselves, to save us time, and handle the common tasks without starting from scratch each time.</aside>
+				</section>
+
+				<section>
+					<h1>Code</h1>
+					<aside class="notes">But most programming languages are lefty, liberal, wishy washy bundles of forgiveness: where to put braces, white space, semi colons, even case, etc. And there are often many ways to do the same thing. And we can spread our code over many files or cram it into one. And why not - the compiler or interpreter doesn't care, it just strips all of that nonsense out and turns our chaotic instructions into shiny machine code (whether in memory or on disk.) In other words, there are few standards, and PC gets very unhappy when CF keeps changing his code style, to visually please him better (CF's visual aesthetic proclivities are a harsh mistress.)</aside>
+				</section>
+
+				<section>
+					<p><img src="img/propaganda.jpg" style="max-height: 700px"></p>
+					<aside class="notes">So us humans go one further above high level languages, and we invent frameworks to keep us in line. Here's what PC says makes a good framework: 1. It means you don't have to reinvent the wheel because it abstracts the common tasks, 2. It prescribes a standard way of doing things, so PC and CF and FF are all on the same page, 3. And as a result it makes everyone's life easier and saves time. Incidentally if your framework fails on any of those accounts, it's worth reconsidering it. That includes the time it takes for everyone on your team to learn the framework!</aside>
+				</section>
+
+				<section>
+					<p>Machine Code <span style="opacity: 0.5;">➜</span> Assembly <span style="opacity: 0.5;">➜</span> High Level Programming Languages <span style="opacity: 0.5;">➜</span> Frameworks</p>
+					<aside class="notes">Interim Conclusion: So we've come from machine code to assembly, to programming languages, to frameworks. And we've done because we don't want to repeat ourselves and we like things to be easy.</aside>
+				</section>
+
+				<section>
+					<section>
+						<h1>Examples</h1>
+					</section>
+				</section>
+<!-- -->
 				<section data-transition="zoom">
 					<h1>That's all, folks!</h1>
-					<p><img src="img/sad_pony.gif"></p>
-					<p><a href="https://github.com/Mottokrosh/JavascriptTools">https://github.com/Mottokrosh/JavascriptTools</a></p>
+					<p><a href="https://github.com/Mottokrosh/CodeIsForHumansContentForMachines">https://github.com/Mottokrosh/CodeIsForHumansContentForMachines</a></p>
 				</section>
 
 			</div>
