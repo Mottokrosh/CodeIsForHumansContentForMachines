@@ -1,21 +1,19 @@
 {
-  "name": "reveal.js",
-  "version": "3.0.0",
-  "description": "The HTML Presentation Framework",
-  "homepage": "http://lab.hakim.se/reveal-js",
-  "subdomain": "revealjs",
+  "name": "CodeIsForHumansContentForMachines",
+  "version": "1.0.0",
+  "description": "A philosophical look at programming for the web",
+  "homepage": "https://github.com/Mottokrosh/CodeIsForHumansContentForMachines",
   "scripts": {
     "test": "grunt test",
     "start": ""
   },
   "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "http://hakim.se"
+    "name": "Frank Reding",
+    "email": "frank@neontribe.co.uk"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hakimel/reveal.js.git"
+    "url": "https://github.com/Mottokrosh/CodeIsForHumansContentForMachines"
   },
   "engines": {
     "node": "~0.10.0"
@@ -41,8 +39,7 @@
   },
   "licenses": [
     {
-      "type": "MIT",
-      "url": "https://github.com/hakimel/reveal.js/blob/master/LICENSE"
+      "type": "MIT"
     }
   ]
 }
