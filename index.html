@@ -261,6 +261,28 @@ end
 					<section>
 						<h1>Examples</h1>
 					</section>
+					<section>
+						<h2>Gotchas</h2>
+						<pre><code data-trim>
+// &lt;ol class="item-container">
+// 	&lt;li class="item-1">Snickers: £59.99&lt;/li>
+//	&lt;li class="item-2">Pez: £2&lt;/li>
+//	&lt;li class="item-3">Toblerone: £37.5&lt;/li>
+// &lt;/ol>
+// &lt;button class="sort-by-price">Sort by Price&lt;/button>
+var model_data = [
+	{ id: 1, name: 'Snickers', price: 59.99 },
+	{ id: 2, name: 'Pez', price: 2 },
+	{ id: 3, name: 'Toblerone', price: 37.5 }
+];
+$('.sort-by-price').on('click', function (event) {
+	model_data.sort(function (a, b) { return a.price - b.price; });
+	$.each(model_data, function (index, value) {
+		$('.item-' + value.id).append('.item-container');
+	});
+});
+						</code></pre>
+					</section>
 				</section>
 <!-- -->
 				<section data-transition="zoom">
