@@ -41,7 +41,6 @@
 			<div class="slides">
 
 				<section>
-					<aside class="notes">Notes</aside>
 					<pre><code data-trim>
 // introduction.js
 var http = require('http');
@@ -53,6 +52,7 @@ http.get(db + '/content/introduction', function (res) {
 	console.log('Blimey: ' + e.message);
 });;
 					</code></pre>
+					<aside class="notes">Hi, I'm Frank.</aside>
 				</section>
 
 				<section>
@@ -66,7 +66,7 @@ http.get(db + '/content/introduction', function (res) {
 
 				<section>
 					<p><img src="img/contemporary_frank.gif" style="max-height: 700px"></p>
-					<aside class="notes">Contemporary Frank. It'll be his fault.</aside>
+					<aside class="notes">Contemporary Frank. Not technically fictional, but included because it'll all be his fault.</aside>
 				</section>
 
 				<section>
@@ -284,27 +284,11 @@ $('.sort-by-price').on('click', function (event) {
 						</code></pre>
 					</section>
 					<section>
-						<h2>Clever</h2>
-						<pre><code data-trim>
-fnTest = /xyz/.test(function() {
-	xyz;
-}) ? /\b_super\b/ : /.*/
-						</code></pre>
-						<pre class="fragment"><code data-trim>
-var toStringSupported = (function () { var test = 'I can see this'; })
-	.toString()
-	.test(/I can see this/);
-if (toStringSupported) {
-	var checkIfHasSuper = typeof fnTest._super === 'Function';
-}
-						</code></pre>
-					</section>
-					<section>
 						<h2>Hidden Magic</h2>
 						<pre><code data-trim>
 > var ar = ['a', 'b', 'c', 'd'];
-> ar.slice(4);
-< ['a', 'b', 'c', 'd', 4]
+> ar.slice(3);
+< ['a', 'b', 'c', 'd', 3]
 > // WTF?
 						</code></pre>
 						<pre class="fragment"><code data-trim>
@@ -313,6 +297,34 @@ Array.prototype.slice = function (begin, end) {
 	return this;
 }
 						</code></pre>
+					</section>
+					<section>
+						<h2>Clever</h2>
+						<pre class="stretch"><code data-trim>
+(function () {
+  /* global CLASS */
+  'use strict';
+  CLASS({
+    templates: [
+      function toDetailHTML() {/*
+        &lt;li id="%%id">
+          &lt;div class="view">
+            $$completed{className: 'toggle'}
+            $$text{mode: 'read-only', tagName: 'label'}
+            &lt;button class="destroy" id="&lt;%= this.on('click', function () { this.parent.dao.remove(this.data); }) %>">&lt;/button>
+          &lt;/div>
+          $$text{className: 'edit'}
+        &lt;/li>
+        &lt;%
+          this.on('dblclick', toEdit, this.id);
+          this.setClass('completed', function () { return this.data.completed; }.bind(this), this.id);
+        %>
+      */}
+    ]
+  });
+})();
+						</code></pre>
+						<aside class="notes">Comments in JS are preserved and available to things like `Function.prototype.toString()`. Also how Angular does DI.</aside>
 					</section>
 				</section>
 
@@ -347,7 +359,7 @@ Array.prototype.slice = function (begin, end) {
 				</section>
 
 				<section data-background="img/drowning.jpg">
-					<aside class="notes">Content on the Internet is exactly the same. For every one piece of real, useful information, there are 999 pieces of ill-informed hate incitements, low resolution pictures with grammatically poor words in the Impact font family, inane status updates, cute cat pictures, celebrity quotes, celebrity misquotes, out of context news bites with hundreds of "yeah, too right" comments, video re-shares without any words as to why the video might be interest to me, poorly targeted adverts, precisely targeted adverts about products I bought last week, misuses of the words literally and figuratively, stray apostrophes, missing apostrophes, non-researched pseudo-science articles, click-bait headlines, freemium game clones with no shred of original thought, self discovery quizzes to widen your shallow identity pool, porn star name generators, band name generators, and out of date JavaScript framework articles.</aside>
+					<aside class="notes">Content on the Internet is exactly the same. For every one piece of real, useful information, there are 999 pieces of ill-informed hate incitements, low resolution pictures with grammatically poor words in the Impact font family, inane status updates, cute cat pictures, celebrity quotes, celebrity misquotes, out of context news bites with hundreds of "yeah, too right" comments, video re-shares without any words as to why the video might be of interest to me, poorly targeted adverts, precisely targeted adverts about products I bought last week, misuses of the words literally and figuratively, stray apostrophes, missing apostrophes, non-researched pseudo-science articles, click-bait headlines, freemium game clones with no shred of original thought, self discovery quizzes to widen your shallow identity pool, porn star name generators, band name generators, and out of date JavaScript framework articles.</aside>
 				</section>
 
 				<section>
@@ -379,10 +391,74 @@ Array.prototype.slice = function (begin, end) {
 					<aside class="notes">But then came spammers, sorry, internet marketers, playing the search engines crawlers. And in turn the machines evolved and became better at discerning content from spam. But the battle continues, and it rages farther and wider than ever, with an ever growing arsenal of tools at each side's disposal, in the form of expanded HTML and CSS specifications, browser plugins and extensions, JavaScript, and more.</aside>
 				</section>
 
-<!-- -->
+				<section>
+					<p><img src="img/neural_siri.jpg" style="max-height: 700px"></p>
+					<aside class="notes">When Future Frank wants to find information, he relies on machines to find it for him like he has since his CF times. But he's lucky, because, while too lazy to put his contact lenses in, Fembot Siri 4000 listens to his vague, garbled mumblings passing for search instructions, and translates them into real words for Advanced Neural Network Brain Facsimile (powered by Google) to feed through the universe of content it stores to find what he's looking for.</aside>
+				</section>
+
+				<section>
+					<section>
+						<h2>Visually</h2>
+						<p>Photos of my trip are <a href="#">here</a>, <a href="#">here</a>, and <a href="#">here</a>. For more information about the location <a href="#">click here</a>, or <a href="#">click here</a> for a downloadable PDF. Finally, <a href="#">click here</a> to get in touch with me.</p>
+						<div class="fragment">
+							<h2>Screen Reader Link Summary</h2>
+							<ul>
+								<li>here</li>
+								<li>here</li>
+								<li>here</li>
+								<li>click here</li>
+								<li>click here</li>
+								<li>click here</li>
+							</ul>
+						</div>
+						<aside class="notes">But Future Poor Co-worker is not so lucky. He's blind (from rage, remember), and had to forsake mouse for keyboard navigation. He dictates his search query to his computer, and the machine duly takes him to the desired web page, and his browser is even kind enough to read it out to him. But FPC is a screen reader power user, and immediately presses the shortcut to just have the links read out to him, knowing that this page likely just has some introductory fluff on it.</aside>
+					</section>
+					<section>
+						<p>http://www.smashingmagazine.com/2012/06/links-should-never-say-click-here/</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h1>Hypertext Markup Language</h1>
+						<aside class="notes">So how can we help machines at being better at understanding our content? If only we had some some of method to label it, maybe mark it up with useful semantic information? Oh wait.</aside>
+					</section>
+					<section>
+						<div class="btn btn-large" style=" display: inline-block; padding: 1em 2em; background-color: rgb(192, 192, 192); border-radius: 0.5em; cursor: pointer; font-size: 18px; color: #000;">Negative</div>
+						<pre><code data-trim>
+&lt;div
+  class="btn btn-large"
+  style="
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: rgb(192, 192, 192);
+    border-radius: 0.5em;
+    cursor: pointer;
+    color: #000;
+  "
+>
+Negative
+&lt;/div>
+						</code></pre>
+						<button style="font-size: 18px; padding: 1em 2em; border-radius: 0.5em;">Affirmative</button>
+						<pre><code data-trim>
+&lt;button>Affirmative&lt;/button>
+						</code></pre>
+						<aside class="notes">Button is simplest example but true for all elements. Some hold no meaning (div, span), some do (select, input, abbr, time).</aside>
+					</section>
+				</section>
+
+				<section>
+					<p><img src="img/krieger.gif" style="max-height: 700px"></p>
+					<blockquote>YOU MANIACS! YOU BLEW IT UP! AH, DAMN YOU! GOD DAMN YOU ALL TO HELL!</blockquote>
+					<aside class="notes">The argument for placing special attention on your markup then, is, in the short term, to help FPC to make his life easier, and in the long run, to help guarantee the very survival of our race. --- And that, ladies and gentlemen, is why code is for humans, and content for machines.</aside>
+				</section>
+
 				<section data-transition="zoom">
 					<h1>That's all, folks!</h1>
 					<p><a href="https://github.com/Mottokrosh/CodeIsForHumansContentForMachines">https://github.com/Mottokrosh/CodeIsForHumansContentForMachines</a></p>
+					<p><a href="https://twitter.com/Mottokrosh">@Mottokrosh</a></p>
+					<p><img src="img/hail.jpg" style="max-height: 400px"></p>
 				</section>
 
 			</div>
