@@ -284,8 +284,35 @@ $('.sort-by-price').on('click', function (event) {
 						</code></pre>
 					</section>
 					<section>
-						<h2>Opaque Utility Functions</h2>
-						<!-- insert example -->
+						<h2>Clever</h2>
+						<pre><code data-trim>
+fnTest = /xyz/.test(function() {
+	xyz;
+}) ? /\b_super\b/ : /.*/
+						</code></pre>
+						<pre class="fragment"><code data-trim>
+var toStringSupported = (function () { var test = 'I can see this'; })
+	.toString()
+	.test(/I can see this/);
+if (toStringSupported) {
+	var checkIfHasSuper = typeof fnTest._super === 'Function';
+}
+						</code></pre>
+					</section>
+					<section>
+						<h2>Hidden Magic</h2>
+						<pre><code data-trim>
+> var ar = ['a', 'b', 'c', 'd'];
+> ar.slice(4);
+< ['a', 'b', 'c', 'd', 4]
+> // WTF?
+						</code></pre>
+						<pre class="fragment"><code data-trim>
+Array.prototype.slice = function (begin, end) {
+	this.push(begin);
+	return this;
+}
+						</code></pre>
 					</section>
 				</section>
 
